@@ -4,7 +4,10 @@ import 'package:inventory_management_app/config/config.dart';
 import 'package:inventory_management_app/config/router/app_router_notifier.dart';
 import 'package:inventory_management_app/features/auth/auth.dart';
 import 'package:inventory_management_app/features/auth/presentation/providers/auth_provider.dart';
-// import 'package:inventory_management_app/features/products/products.dart';
+import 'package:inventory_management_app/features/dashboard/dashboard.dart';
+import 'package:inventory_management_app/features/products/products.dart';
+import 'package:inventory_management_app/features/sales/sales.dart';
+// import 'package:inventory_management_app/features/products/sales_screen.dart';
 
 final goRouterProvider = Provider((ref) {
   final goRouterNotifier = ref.read(goRouterNotifierProvider);
@@ -26,11 +29,23 @@ final goRouterProvider = Provider((ref) {
           builder: (context, state) => const RegisterScreen(),
         ),
 
-        ///* Product Routes
-        // GoRoute(
-        //   path: '/',
-        //   builder: (context, state) => const ProductsScreen(),
-        // ),
+        ///* Dashboard
+        GoRoute(
+          path: '/',
+          builder: (context, state) => const DashboardScreen(),
+        ),
+        ///* Products
+        GoRoute(
+          path: '/products',
+          builder: (context, state) => const ProductsScreen(),
+        ),
+
+        /// * Sales
+        GoRoute(
+          path: '/sales',
+          builder: (context, state) => const SalesScreen(),
+        )
+
         // ///* Product Route
         // GoRoute(
         //   path: '/product/:id',
