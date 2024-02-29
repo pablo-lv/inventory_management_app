@@ -7,7 +7,6 @@ import 'package:inventory_management_app/features/auth/presentation/providers/au
 import 'package:inventory_management_app/features/dashboard/dashboard.dart';
 import 'package:inventory_management_app/features/products/products.dart';
 import 'package:inventory_management_app/features/sales/sales.dart';
-// import 'package:inventory_management_app/features/products/sales_screen.dart';
 
 final goRouterProvider = Provider((ref) {
   final goRouterNotifier = ref.read(goRouterNotifierProvider);
