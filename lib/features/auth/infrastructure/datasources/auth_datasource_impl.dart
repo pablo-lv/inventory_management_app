@@ -14,6 +14,7 @@ class AuthDataSourceImpl extends AuthDataSource {
   @override
   Future<User> login(String email, String password) async {
     try {
+      print('login');
       final response = await dio.post(
         '/auth/login',
         data: {
@@ -24,11 +25,11 @@ class AuthDataSourceImpl extends AuthDataSource {
 
       final user = UserMapper.userJsonToEntity(response.data);
       return user;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
         throw CustomError(e.response?.data['message'] ?? 'Invalid credentials');
       }
-      if (e.type == DioErrorType.connectionTimeout) {
+      if (e.type == DioExceptionType.connectionTimeout) {
         throw CustomError('Connection timeout, please try again');
       }
       throw CustomError('Something went wrong in dio request');
@@ -39,8 +40,32 @@ class AuthDataSourceImpl extends AuthDataSource {
   }
 
   @override
-  Future<User> register(String email, String password, String fullName) {
-    throw UnimplementedError();
+  Future<User> register(String email, String password, String fullName) async {
+    try {
+      final response = await dio.post(
+        '/auth/register',
+        data: {
+          'email': email,
+          'password': password,
+          'fullName': fullName,
+        },
+      );;
+
+      final user = UserMapper.userJsonToEntity(response.data);
+      return user;
+
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) {
+        throw CustomError(e.response?.data['message'] ?? 'Invalid credentials');
+      }
+      if (e.type == DioExceptionType.connectionTimeout) {
+        throw CustomError('Connection timeout, please try again');
+      }
+      throw CustomError('Something went wrong in dio request');
+
+    } catch (e){
+      throw CustomError('Something went wrong');
+    }
   }
 
   @override
@@ -56,11 +81,11 @@ class AuthDataSourceImpl extends AuthDataSource {
       final user = UserMapper.userJsonToEntity(response.data);
 
       return user;
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       if (e.response?.statusCode == 401) {
         throw CustomError('Invalid Token');
       }
-      if (e.type == DioErrorType.connectionTimeout) {
+      if (e.type == DioExceptionType.connectionTimeout) {
         throw CustomError('Connection timeout, please try again');
       }
       throw CustomError('Something went wrong in dio request');

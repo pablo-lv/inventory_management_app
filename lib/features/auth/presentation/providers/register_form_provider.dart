@@ -50,9 +50,11 @@ class RegisterFormState {
 
 class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
 
-  // final Function(String, String) registerUserCallback;
+  final Function(String, String, String) registerUserCallback;
 
-  RegisterFormNotifier(): super(RegisterFormState());
+  RegisterFormNotifier({
+    required this.registerUserCallback,
+  }): super(RegisterFormState());
 
   onFullNameChange(String value) {
     final fullName = Name.dirty(value);
@@ -92,7 +94,7 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
     if (!state.isValid) return;
 
     state = state.copyWith(isPosting: true);
-    // await registerUserCallback(state.email.value, state.password.value);
+    await registerUserCallback(state.email.value, state.password.value, state.fullName.value);
     state = state.copyWith(isPosting: false);
   }
 
@@ -114,6 +116,6 @@ class RegisterFormNotifier extends StateNotifier<RegisterFormState> {
 }
 
 final registerFormProvider = StateNotifierProvider.autoDispose<RegisterFormNotifier, RegisterFormState>((ref) {
-  // final registerUserCallback = ref.watch(authProvider.notifier).loginUser;
-  return RegisterFormNotifier();
+  final registerUserCallback = ref.watch(authProvider.notifier).registerUser;
+  return RegisterFormNotifier(registerUserCallback: registerUserCallback);
 });

@@ -43,7 +43,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   void registerUser(String email, String password, String fullName) async {
-
+    try {
+     final user = await authRepository.register(email, password, fullName);
+      _setLoggedUser(user);
+    } catch (e) {
+      logout('Error');
+    }
   }
 
   void checkAuthStatus() async {
