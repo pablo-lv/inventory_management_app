@@ -35,6 +35,7 @@ class SideMenuState extends ConsumerState<SideMenu> {
     MenuItem(link: '/'),
     MenuItem(link: '/products'),
     MenuItem(link: '/sales'),
+    MenuItem(link: '/scanner'),
   ];
 
   SideMenuState(int menuIndex){
@@ -84,6 +85,11 @@ class SideMenuState extends ConsumerState<SideMenu> {
         const NavigationDrawerDestination(
           icon: Icon( Icons.money_outlined ),
           label: Text( 'Ventas' ),
+        ),
+
+        const NavigationDrawerDestination(
+          icon: Icon( Icons.qr_code_scanner_outlined ),
+          label: Text( 'Scanner' ),
         ),
 
 

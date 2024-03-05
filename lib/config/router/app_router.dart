@@ -7,6 +7,7 @@ import 'package:inventory_management_app/features/auth/presentation/providers/au
 import 'package:inventory_management_app/features/dashboard/dashboard.dart';
 import 'package:inventory_management_app/features/products/products.dart';
 import 'package:inventory_management_app/features/sales/sales.dart';
+import 'package:inventory_management_app/features/scanner/scanner.dart';
 
 final goRouterProvider = Provider((ref) {
   final goRouterNotifier = ref.read(goRouterNotifierProvider);
@@ -43,6 +44,11 @@ final goRouterProvider = Provider((ref) {
         GoRoute(
           path: '/sales',
           builder: (context, state) => const SalesScreen(),
+        ),
+
+        GoRoute(
+          path: '/scanner',
+          builder: (context, state) => const ScannerScreen(),
         )
 
         // ///* Product Route
