@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory_management_app/features/shared/shared.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:go_router/go_router.dart';
 
@@ -32,7 +33,14 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final scaffoldKey = GlobalKey<ScaffoldState>();
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+      drawer: SideMenu(
+        scaffoldKey: scaffoldKey,
+        menuIndex: 3,
+      ),
       body: Column(
         children: <Widget>[
           Expanded(flex: 4, child: _buildQrView(context)),
@@ -48,12 +56,12 @@ class _ScannerScreenState extends State<ScannerScreen> {
                     //     'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
                     ElevatedButton(
                       onPressed: () {
+                        scaffoldKey.currentState?.openEndDrawer();
                         _navigateToProductsPage(context, result!.code);
                       },
                       child: const Text('Detalles del producto'),
                     )
-                  else
-                    const Text('Escanear Codigo QR'),
+                  ,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,36 +76,13 @@ class _ScannerScreenState extends State<ScannerScreen> {
                             child: FutureBuilder(
                               future: controller?.getFlashStatus(),
                               builder: (context, snapshot) {
-                                return Text('Flash: ${snapshot.data}');
+                                if (snapshot.data == true) {
+                                  return Icon(Icons.flashlight_on, size: 20,);
+                                }
+                                return Icon(Icons.flashlight_off, size: 20,);
                               },
                             )),
                       ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.pauseCamera();
-                          },
-                          child: const Text('pause',
-                              style: TextStyle(fontSize: 20)),
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.all(8),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await controller?.resumeCamera();
-                          },
-                          child: const Text('resume',
-                              style: TextStyle(fontSize: 20)),
-                        ),
-                      )
                     ],
                   ),
                 ],
@@ -106,7 +91,9 @@ class _ScannerScreenState extends State<ScannerScreen> {
           )
         ],
       ),
+    )
     );
+
   }
 
   Widget _buildQrView(BuildContext context) {
@@ -138,11 +125,11 @@ class _ScannerScreenState extends State<ScannerScreen> {
       setState(() {
         result = scanData;
       });
-      if (result != null) {
-        // Navigate using go_router
-        context.go('/products');
-        qrKey.currentState?.dispose();
-      }
+      // if (result != null) {
+      //   // Navigate using go_router
+      //   context.go('/products');
+      //   qrKey.currentState?.dispose();
+      // }
 
     });
   }
@@ -158,8 +145,9 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
   void _navigateToProductsPage(BuildContext context, String? data) {
     // Use GoRouter to navigate to the products page with the scanned data
-    context.go("/products");
+    context.go("/product/$data");
   }
+
 
   @override
   void dispose() {

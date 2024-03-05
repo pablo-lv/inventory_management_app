@@ -15,6 +15,7 @@ class CustomProductField extends StatelessWidget {
   final Function(String)? onChanged;
   final Function(String)? onFieldSubmitted;
   final String? Function(String?)? validator;
+  final bool? isEnabled;
 
   const CustomProductField({
     super.key,
@@ -30,6 +31,7 @@ class CustomProductField extends StatelessWidget {
     this.onChanged,
     this.onFieldSubmitted,
     this.validator,
+    this.isEnabled = true,
   });
 
   @override
@@ -64,6 +66,7 @@ class CustomProductField extends StatelessWidget {
           ]
       ),
       child: TextFormField(
+        enabled: isEnabled,
         onChanged: onChanged,
         onFieldSubmitted: onFieldSubmitted,
         validator: validator,

@@ -49,13 +49,13 @@ final goRouterProvider = Provider((ref) {
         GoRoute(
           path: '/scanner',
           builder: (context, state) => const ScannerScreen(),
-        )
+        ),
 
-        // ///* Product Route
-        // GoRoute(
-        //   path: '/product/:id',
-        //   builder: (context, state) => ProductScreen(productId: state.params['id'] ?? 'no-id'),
-        // ),
+        ///* Product Route
+        GoRoute(
+          path: '/product/:id',
+          builder: (context, state) => ProductScreen(productId: state.params['id'] ?? 'no-id'),
+        ),
       ],
       redirect: (context, state) {
         print(state.subloc);
