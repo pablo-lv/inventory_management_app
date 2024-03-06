@@ -65,16 +65,22 @@ class ProductsDatasourceImpl extends ProductsDataSource {
 
   @override
   Future<List<Product>> getProductByPage({int limit = 10, offset = 0}) async{
-    final response = await _dio.get<List>('/products?limit=$limit&offset=$offset');
+    try {
+      final response = await _dio.get(
+          '/api/products/pageable?size=$limit&page=$offset');
 
-    final List<Product> products = [];
+      final List<Product> products = [];
 
-    for (final product in response.data ?? []) {
+      for (final product in response.data?? []) {
+        products.add(ProductMapper.jsonToEntity(product));
+      }
 
-      products.add(ProductMapper.jsonToEntity(product));
+      return products;
+    } on DioException catch(e) {
+      throw Exception();
+    } catch(e) {
+      throw   Exception();
     }
-
-    return products;
 
   }
 
