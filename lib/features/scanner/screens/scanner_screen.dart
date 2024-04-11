@@ -83,6 +83,15 @@ class _ScannerScreenState extends State<ScannerScreen> {
                               },
                             )),
                       ),
+                      Container(
+                        margin: const EdgeInsets.all(8),
+                        child: ElevatedButton(
+                            onPressed: () async {
+                              context.go('/');
+                              setState(() {});
+                            },
+                            child: const Icon(Icons.arrow_back, size: 20,)),
+                      )
                     ],
                   ),
                 ],
@@ -145,7 +154,7 @@ class _ScannerScreenState extends State<ScannerScreen> {
 
   void _navigateToProductsPage(BuildContext context, String? data) {
     // Use GoRouter to navigate to the products page with the scanned data
-    context.go("/product/$data");
+    context.push("/product/$data");
   }
 
 
